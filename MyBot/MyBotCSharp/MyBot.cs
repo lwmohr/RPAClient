@@ -8,6 +8,8 @@ namespace RockPaperAzure
 
         bool firstTime = true;
         BotLogger MyBotLog = new BotLogger();
+        int waterCounter = 0;
+        int dynaCounter = 0;
         public Move MakeMove(IPlayer you, IPlayer opponent, GameRules rules)
         {
             if (!firstTime)
@@ -48,6 +50,14 @@ namespace RockPaperAzure
             int water = 0;
             int randomNum;
             int tiesRemaining;
+
+            if (opponent.LastMove == Moves.Dynamite)
+                dynaCounter++;
+            else
+                dynaCounter = 0;
+            if (dynaCounter == 3)
+                return Moves.WaterBalloon;
+
             //if (you.NumberOfDecisions < 5)
             //    you.Log.AppendLine(String.Format("{0}: Move : {1} ms {2}", you.NumberOfDecisions, you.LastMove,you.TotalTimeDeciding.Milliseconds));
              history = 5;
@@ -66,16 +76,26 @@ namespace RockPaperAzure
                     if ((dynamite >= 3) && you.HasDynamite)
                     {
                         you.Log.AppendLine(String.Format("{0}: Water Balloon : {1}/{2}", you.NumberOfDecisions, dynamite, history));
-                        return Moves.WaterBalloon;
+                        if (waterCounter > 0)
+                        {
+                            you.Log.AppendLine(String.Format("{0}: oops decrement water counter : {1}/{2}", you.NumberOfDecisions, waterCounter, history));
+                            waterCounter--;
+                        }
+                        else
+                        {
+                            waterCounter = 2;
+                            return Moves.WaterBalloon;
+                        }
                     }
-                    //if (water >= 3)
-                    //{
+                    if (water >= 3)
+                    {
                         you.Log.AppendLine(String.Format("{0}: Random : {1}/{2}", you.NumberOfDecisions, water, history));
                         return Moves.GetRandomMove();
-                    //}
+                    }
                 }
             }
 
+            //if ((you.LastMove != Moves.Dynamite) && ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite))
             if ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite)
             {
                 randomNum = Moves.GetRandomNumber(3);
@@ -98,7 +118,7 @@ namespace RockPaperAzure
 
     public class BotLogger
     {
-        private int[,] myArray = new int[3000, 5];
+        private int[,] myArray = new int[5000, 5];
         int currentTies = 0;
         int pointsWon = 0;
         int throwNum = 0;
