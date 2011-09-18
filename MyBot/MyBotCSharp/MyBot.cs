@@ -145,7 +145,9 @@ namespace RockPaperAzure
     public class BotLogger
     {
         ArrayList logArray = new ArrayList();
-        private class ShootInfo
+	List<int> ShootInfo = new List<int>();
+	private int[,] myArray = new int[3000,5];
+        private list ShootInfo
         {
             private string myThrow { get; set; }
             private string opponentThrow { get; set; }
@@ -161,10 +163,18 @@ namespace RockPaperAzure
             }
         }
 
+        public void addLog(int myThrow, int opponentThrow, int currentTies, int pointsWon, int throwNum)
+        {
+            myArray[throwNum - 1][0] = myThrow;
+            myArray[throwNum - 1][1] = opponentThrow;
+            myArray[throwNum - 1][2] = currentTies;
+            myArray[throwNum - 1][3] = pointsWon;
+            myArray[throwNum - 1][4] = throwNum;
+        }
+
         public void addLog(string myThrow, string opponentThrow, int currentTies, int pointsWon)
         {
             logArray.Add(new ShootInfo(myThrow, opponentThrow, currentTies, pointsWon));
-            return;
         }
 
         //int i = (ShootInfo)logArray[j].get.currentTies;
