@@ -99,20 +99,22 @@ namespace RockPaperAzure
             if ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite)
             {
                 randomNum = Moves.GetRandomNumber(100);
-                if (((MyBotLog.getTies() == 2) && ( randomNum < 25)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions)  > 40))
+                if ((MyBotLog.getTies() > 1 ) && ( randomNum < 30))
+                //if (((MyBotLog.getTies() == 2) && (randomNum < 25)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions) > 40))
                 {
                     //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
                     return Moves.Dynamite;
                 }
-                randomNum = Moves.GetRandomNumber(3);
-                if (((MyBotLog.getTies() > 2) && (randomNum == 2)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions) > 40))
-                {
-                    //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
-                    return Moves.Dynamite;
-                }
+                //randomNum = Moves.GetRandomNumber(3);
+                //if (((MyBotLog.getTies() > 2) && (randomNum == 2)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions) > 40))
+                //{
+                //    //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
+                //    return Moves.Dynamite;
+                //}
                 tiesRemaining = ((2 * (rules.PointsToWin - opponent.Points)) / 3);
                 randomNum = Moves.GetRandomNumber(tiesRemaining);
-                if ((randomNum <= you.DynamiteRemaining) && ((Moves.GetRandomNumber(rules.PointsToWin / 2) + you.NumberOfDecisions) > ((rules.PointsToWin * 3) / 2)))
+                //if ((randomNum <= you.DynamiteRemaining) && ((Moves.GetRandomNumber(rules.PointsToWin / 2) + you.NumberOfDecisions) > ((rules.PointsToWin * 3) / 2)))
+                if (randomNum <= you.DynamiteRemaining)
                 {
                     //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),tiesRemaining));
                     return Moves.Dynamite;
