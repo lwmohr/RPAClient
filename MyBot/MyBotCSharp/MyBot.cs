@@ -39,18 +39,18 @@ namespace RockPaperAzure
             //float remainingThrows = predictedThrows - totalThrows;
             //float oddsForDynamite = remainingDynamite / remainingThrows;
 
-            if ((dynaTwice == you.NumberOfDecisions) || ((dynaTwice + 1) == you.NumberOfDecisions))
-                return Moves.Dynamite;
-            if (dynaSingleWater == you.NumberOfDecisions)
-                return Moves.Dynamite;
-            if ((dynaSingleWater + 1) == you.NumberOfDecisions)
-                return Moves.WaterBalloon;
-            if ((dynaTwiceWater == you.NumberOfDecisions) || ((dynaTwiceWater + 1) == you.NumberOfDecisions))
-                return Moves.Dynamite;
-            if ((dynaTwiceWater + 2) == you.NumberOfDecisions)
-                return Moves.WaterBalloon;
-            if (waterSingle == you.NumberOfDecisions)
-                return Moves.WaterBalloon;
+            //if ((dynaTwice == you.NumberOfDecisions) || ((dynaTwice + 1) == you.NumberOfDecisions))
+            //    return Moves.Dynamite;
+            //if (dynaSingleWater == you.NumberOfDecisions)
+            //    return Moves.Dynamite;
+            //if ((dynaSingleWater + 1) == you.NumberOfDecisions)
+            //    return Moves.WaterBalloon;
+            //if ((dynaTwiceWater == you.NumberOfDecisions) || ((dynaTwiceWater + 1) == you.NumberOfDecisions))
+            //    return Moves.Dynamite;
+            //if ((dynaTwiceWater + 2) == you.NumberOfDecisions)
+            //    return Moves.WaterBalloon;
+            //if (waterSingle == you.NumberOfDecisions)
+            //    return Moves.WaterBalloon;
 
             if (tiesCounter >= 2 && opponent.LastMove == Moves.WaterBalloon)
                 twoTieWater = true;
@@ -68,22 +68,27 @@ namespace RockPaperAzure
                     switch (tiesCounter){
 
                         case 1:
-                            if (myRand < 4)
+                            if (myRand < 1)
                                 return Moves.Dynamite;
                             break;
                         case 2:
-                            if (myRand < 20)
-                                return Moves.Dynamite;
+                            if (you.DynamiteRemaining >= Moves.GetRandomNumber((1000 - opponent.Points)))
+                            {
+                             //   if (myRand < 50)
+                                    return Moves.Dynamite;
+                            }
                             break;
                         default:
-                            if (!twoTieWater)
+                            if (!twoTieWater && (you.NumberOfDecisions > 500))
                                 return Moves.Dynamite;
-                            else if (myRand < 50)
+                            else if (myRand < 60)
                                 return Moves.Dynamite;
+                            else if ( (myRand > 98)  && ( opponent.HasDynamite ))
+                                return Moves.WaterBalloon;
                             break;
                     }
                 }
-                if (you.DynamiteRemaining >= Moves.GetRandomNumber((1000 - opponent.Points) * 4))
+                if (you.DynamiteRemaining >= Moves.GetRandomNumber(((1000 - opponent.Points) * 16) - 14))
                     return Moves.Dynamite;
             }
             return Moves.GetRandomMove();
