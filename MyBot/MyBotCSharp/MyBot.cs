@@ -14,7 +14,9 @@ namespace RockPaperAzure
 
         bool firstTime = true;
         bool twoTieWater = false;
-        int dynaTwice, dynaSingleWater, dynaTwiceWater, waterSingle;
+        bool firstTieDyna = false;
+        bool secondTieDyna = false;
+        int dynaTwice, dynaSingleWater, dynaTwiceWater, waterSingle, transitionPoint;
 
 
         public Move MakeMove(IPlayer you, IPlayer opponent, GameRules rules)
@@ -27,6 +29,8 @@ namespace RockPaperAzure
                 //dynaTwiceWater = 5;
                 waterSingle = Moves.GetRandomNumber(500);
                 firstTime = false;
+                transitionPoint = Moves.GetRandomNumber(400);
+                transitionPoint += 700;
             }
 
             //float highPoint = you.Points;
@@ -54,6 +58,11 @@ namespace RockPaperAzure
 
             if (tiesCounter >= 2 && opponent.LastMove == Moves.WaterBalloon)
                 twoTieWater = true;
+            if ((tiesCounter == 1) && (opponent.LastMove == Moves.Dynamite))
+                firstTieDyna = true;
+            if ((tiesCounter == 2) && (opponent.LastMove == Moves.Dynamite))
+                secondTieDyna = true;
+
 
             if (you.LastMove == opponent.LastMove)
                 tiesCounter++;
@@ -64,31 +73,56 @@ namespace RockPaperAzure
             {
                 if (tiesCounter > 0)
                 {
-                    int myRand = Moves.GetRandomNumber(100);
+                    int myRand = Moves.GetRandomNumber(1000);
                     switch (tiesCounter){
 
                         case 1:
-                            if (myRand < 1)
-                                return Moves.Dynamite;
+                            //if ((transitionPoint > you.NumberOfDecisions) && opponent.HasDynamite)
+                            //{
+                                if ((myRand < 500) && (you.DynamiteRemaining >= Moves.GetRandomNumber((int)(rules.PointsToWin - opponent.Points) / 2)))
+                                    return Moves.Dynamite;
+                            //if ((firstTieDyna) && ((myRand > 950) && (opponent.HasDynamite)))
+                            //    return Moves.WaterBalloon;
+
+                            //}
                             break;
                         case 2:
-                            if (you.DynamiteRemaining >= Moves.GetRandomNumber((1000 - opponent.Points)))
+                            if ((you.LastMove == Moves.Dynamite) && (opponent.DynamiteRemaining > 1))
                             {
-                             //   if (myRand < 50)
+                                if (myRand < 200)
                                     return Moves.Dynamite;
+                                if (myRand > 800)
+                                    return Moves.WaterBalloon;
+
+                            }
+                            else if (you.DynamiteRemaining >= Moves.GetRandomNumber((int)(rules.PointsToWin - opponent.Points) / 5))
+                            {
+                                if (myRand < 500)
+                                    return Moves.Dynamite;
+                                //if ((secondTieDyna) && ((myRand > 990) && (opponent.HasDynamite)))
+                                //    return Moves.WaterBalloon;
                             }
                             break;
                         default:
-                            if (!twoTieWater && (you.NumberOfDecisions > 500))
-                                return Moves.Dynamite;
-                            else if (myRand < 60)
-                                return Moves.Dynamite;
-                            else if ( (myRand > 98)  && ( opponent.HasDynamite ))
-                                return Moves.WaterBalloon;
+                            if ((you.LastMove == Moves.Dynamite) && (opponent.DynamiteRemaining > 1))
+                            {
+                                if (myRand < 200)
+                                    return Moves.Dynamite;
+                                if (myRand > 800) 
+                                    return Moves.WaterBalloon;
+
+                            }
+                            else
+                            {
+                                if (myRand < 500)
+                                    return Moves.Dynamite;
+                                //if ((secondTieDyna) && ((myRand > 990) && (opponent.HasDynamite)))
+                                //    return Moves.WaterBalloon;
+                            }
                             break;
                     }
                 }
-                if (you.DynamiteRemaining >= Moves.GetRandomNumber(((1000 - opponent.Points) * 16) - 14))
+                if (you.DynamiteRemaining >= Moves.GetRandomNumber(((rules.PointsToWin - opponent.Points) * 16) - 14))
                     return Moves.Dynamite;
             }
             return Moves.GetRandomMove();
