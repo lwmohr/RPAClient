@@ -37,19 +37,20 @@ namespace RockPaperAzure
                     opponentMove = 4;
                 if (opponent.LastMove == Moves.Paper)
                     opponentMove = 5;
-                MyBotLog.addLog(myMove,opponentMove);
+                MyBotLog.addLog(myMove, opponentMove);
             }
             else
             {
                 firstTime = false;
-            return Moves.GetRandomMove();
-        }
+                return Moves.GetRandomMove();
+            }
 
             int history;
             int dynamite = 0;
             int water = 0;
             int randomNum;
             int tiesRemaining;
+            int throwsRemaining;
 
             if ((opponent.LastMove == Moves.Dynamite) && (you.LastMove != Moves.Dynamite))
                 dynaCounter++;
@@ -60,13 +61,13 @@ namespace RockPaperAzure
 
             //if (you.NumberOfDecisions < 5)
             //    you.Log.AppendLine(String.Format("{0}: Move : {1} ms {2}", you.NumberOfDecisions, you.LastMove,you.TotalTimeDeciding.Milliseconds));
-             history = 5;
-             //if ((you.NumberOfDecisions >= history) && (MyBotLog.getTies() > 1))
-                 if (you.NumberOfDecisions >= history)
-             {
-                 MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-                 you.Log.AppendLine(String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}", you.NumberOfDecisions, MyBotLog.getThrowNum(), MyBotLog.getTies(), MyBotLog.getPointsWon(), you.LastMove, opponent.LastMove, water, dynamite));
-             }
+            history = 5;
+            //if ((you.NumberOfDecisions >= history) && (MyBotLog.getTies() > 1))
+            if (you.NumberOfDecisions >= history)
+            {
+                MyBotLog.analyzeThrow(history, ref dynamite, ref water);
+                you.Log.AppendLine(String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}", you.NumberOfDecisions, MyBotLog.getThrowNum(), MyBotLog.getTies(), MyBotLog.getPointsWon(), you.LastMove, opponent.LastMove, water, dynamite));
+            }
             if (you.LastMove.Equals(opponent.LastMove) || (opponent.LastMove.Equals(Moves.Dynamite) || opponent.LastMove.Equals(Moves.WaterBalloon)))
             {
                 history = 5;
@@ -99,7 +100,7 @@ namespace RockPaperAzure
             if ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite)
             {
                 randomNum = Moves.GetRandomNumber(100);
-                if ((MyBotLog.getTies() > 1 ) && ( randomNum < 30))
+                if ((MyBotLog.getTies() > 1) && (randomNum < 40))
                 //if (((MyBotLog.getTies() == 2) && (randomNum < 25)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions) > 40))
                 {
                     //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
@@ -119,6 +120,15 @@ namespace RockPaperAzure
                     //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),tiesRemaining));
                     return Moves.Dynamite;
                 }
+
+            }
+            throwsRemaining = (2 * (rules.PointsToWin - opponent.Points));
+            randomNum = Moves.GetRandomNumber(throwsRemaining);
+            if (((randomNum <= you.DynamiteRemaining) && you.HasDynamite) && ((Moves.GetRandomNumber(rules.PointsToWin / 20) + you.NumberOfDecisions) > 1900 ))
+            //if (randomNum <= you.DynamiteRemaining)
+            {
+                //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),tiesRemaining));
+                return Moves.Dynamite;
             }
             return Moves.GetRandomMove();
         }
@@ -145,11 +155,11 @@ namespace RockPaperAzure
                 currentTies = 0;
             }
 
-            myArray[throwNum - 1,0] = myThrow;
-            myArray[throwNum - 1,1] = opponentThrow;
-            myArray[throwNum - 1,2] = currentTies;
-            myArray[throwNum - 1,3] = pointsWon;
-            myArray[throwNum - 1,4] = throwNum;
+            myArray[throwNum - 1, 0] = myThrow;
+            myArray[throwNum - 1, 1] = opponentThrow;
+            myArray[throwNum - 1, 2] = currentTies;
+            myArray[throwNum - 1, 3] = pointsWon;
+            myArray[throwNum - 1, 4] = throwNum;
             pointsWon = 0;
         }
 
@@ -170,15 +180,15 @@ namespace RockPaperAzure
         {
             dynamite = 0;
             water = 0;
-            int tmpTies = myArray[throwNum - 1,2];
+            int tmpTies = myArray[throwNum - 1, 2];
             for (int i = (throwNum - 2); i >= 0; i--)
             {
                 //if ((histInstances != 0) && ((myArray[i,0] == myArray[throwNum - 1,0]) && (myArray[i,2] == myArray[throwNum - 1,2])))
                 if ((histInstances != 0) && (myArray[i, 2] == myArray[throwNum - 1, 2]))
                 {
-                    if (myArray[i + 1,1] == 0)
+                    if (myArray[i + 1, 1] == 0)
                         water++;
-                    else if (myArray[i + 1,1] == 1)
+                    else if (myArray[i + 1, 1] == 1)
                         dynamite++;
                     histInstances--;
                 }
