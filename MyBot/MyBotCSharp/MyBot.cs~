@@ -1,7 +1,6 @@
 ﻿using RockPaperScissorsPro;
 using System;
 
-
 namespace RockPaperAzure
 {
     public class MyBot : IRockPaperScissorsBot
