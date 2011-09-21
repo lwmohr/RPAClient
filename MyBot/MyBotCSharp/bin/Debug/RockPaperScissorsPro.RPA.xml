@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RockPaperScissorsPro.RPA</name>
+    </assembly>
+    <members>
+        <member name="T:RockPaperScissorsPro.Moves">
+            <summary>
+            Encapsulates move semantics for Rock, Paper, Azure  
+            </summary>
+        </member>
+        <member name="M:RockPaperScissorsPro.Moves.GetRandomMove">
+            <summary>
+            Gets a random move of either rock, paper, or scissors.  
+            </summary>
+            <returns>A move of rock, paper, or scissors.</returns>
+        </member>
+        <member name="M:RockPaperScissorsPro.Moves.GetRandomNumber(System.Int32)">
+            <summary>
+            Gets a random number between 0 and max (exclusive).  
+            </summary>
+            <param name="max">The exclusive upper bound of the random number to be generated; must be greater than zero</param>
+            <returns>A random number between 0 and <paramref name="max"/> (exclusive).</returns>
+        </member>
+        <member name="P:RockPaperScissorsPro.Moves.Rock">
+            <summary>
+            Rock move  
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.Moves.Scissors">
+            <summary>
+            Scissors move  
+            </summary>        
+        </member>
+        <member name="P:RockPaperScissorsPro.Moves.Paper">
+            <summary>
+            Paper move  
+            </summary>         
+        </member>
+        <member name="P:RockPaperScissorsPro.Moves.Dynamite">
+            <summary>
+            Dynamite move  
+            </summary> 
+        </member>
+        <member name="P:RockPaperScissorsPro.Moves.WaterBalloon">
+            <summary>
+            Water balloon move  
+            </summary> 
+        </member>
+        <member name="M:RockPaperScissorsPro.Move.Equals(System.Object)">
+            <summary>
+            Determines if two moves are equivalent  
+            </summary>
+        </member>
+        <member name="M:RockPaperScissorsPro.Move.op_Equality(RockPaperScissorsPro.Move,RockPaperScissorsPro.Move)">
+            <summary>
+            Determines if two moves are equivalent  
+            </summary>
+        </member>
+        <member name="M:RockPaperScissorsPro.Move.op_Inequality(RockPaperScissorsPro.Move,RockPaperScissorsPro.Move)">
+            <summary>
+            Determines if two moves are different  
+            </summary>
+        </member>
+        <member name="M:RockPaperScissorsPro.Move.GetHashCode">
+            <summary>
+            Provides unique hash code for a move
+            </summary>
+        </member>
+        <member name="T:RockPaperScissorsPro.GameRules">
+            <summary>
+            Collection of rules defining a Rock, Paper, Azure match  
+            </summary> 
+        </member>
+        <member name="F:RockPaperScissorsPro.GameRules.Default">
+            <summary>
+            Default Rock, Paper, Azure match rules  
+            </summary> 
+        </member>
+        <member name="P:RockPaperScissorsPro.GameRules.MaximumGames">
+            <summary>
+            Maximum number of games that will be played between two opponents in a given match (value: 5000)
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.GameRules.PointsToWin">
+            <summary>
+            Number of points needed to win a match (value: 1000)
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.GameRules.StartingDynamite">
+            <summary>
+            Number of dynamite moves that can be made in a given match (value: 100)
+            </summary>
+        </member>
+        <member name="T:RockPaperScissorsPro.IPlayer">
+            <summary>
+            Interface representing a player (bot) in Rock, Paper, Azure
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.TeamName">
+            <summary>
+            Player's (bot's) name (inferred from bot assembly name)
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.DynamiteRemaining">
+            <summary>
+            Number of valid dynamite moves player has remaining in match
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.HasDynamite">
+            <summary>
+            Indicates whether player can use dynamite on next move
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.Points">
+            <summary>
+            Number of points player has accrued in current match
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.NumberOfDecisions">
+            <summary>
+            Number of completed moves player has made in current match
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.TotalTimeDeciding">
+            <summary>
+            Total execution time consumed by player's bot in current match
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.LastMove">
+            <summary>
+            Player's previous move
+            </summary>
+        </member>
+        <member name="P:RockPaperScissorsPro.IPlayer.Log">
+            <summary>
+            Log file
+            </summary>
+        </member>
+        <member name="T:RockPaperScissorsPro.IRockPaperScissorsBot">
+            <summary>
+            Interface that must be implemented by every Rock, Paper, Azure bot  
+            </summary>
+        </member>
+        <member name="M:RockPaperScissorsPro.IRockPaperScissorsBot.MakeMove(RockPaperScissorsPro.IPlayer,RockPaperScissorsPro.IPlayer,RockPaperScissorsPro.GameRules)">
+            <summary>
+            Implementation of a single move in Rock, Paper, Azure
+            </summary>
+            <param name="you">Status information about your bot in the current match</param>
+            <param name="opponent">Status information about your bot's opponent in the current match</param>
+            <param name="rules">Rock, Paper, Azure match parameters</param>
+            <returns>A move</returns>
+        </member>
+        <member name="T:RockPaperScissorsPro.ExceptionMove">
+            <summary>
+            Uninstantiatable type used to indicate a move that caused an exception or timeout
+            </summary>
+        </member>
+    </members>
+</doc>
