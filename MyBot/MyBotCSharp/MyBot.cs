@@ -11,6 +11,7 @@ namespace RockPaperAzure
         BotLogger MyBotLog = new BotLogger();
         int waterCounter = 0;
         int dynaCounter = 0;
+        int remainingThrowTransition, startDynamite, startWaterBalloon;
         public Move MakeMove(IPlayer you, IPlayer opponent, GameRules rules)
         {
             if (!firstTime)
@@ -38,13 +39,16 @@ namespace RockPaperAzure
                     opponentMove = 4;
                 if (opponent.LastMove == Moves.Paper)
                     opponentMove = 5;
-                MyBotLog.addLog(myMove,opponentMove);
+                MyBotLog.addLog(myMove, opponentMove);
             }
             else
             {
                 firstTime = false;
-            return Moves.GetRandomMove();
-        }
+                remainingThrowTransition = (rules.PointsToWin / 2) + Moves.GetRandomNumber(rules.PointsToWin / 5);
+                startDynamite = (rules.PointsToWin / 30) + Moves.GetRandomNumber(rules.PointsToWin / 20);
+                startWaterBalloon = ((rules.PointsToWin * 2) / 3) + Moves.GetRandomNumber(rules.PointsToWin / 3);
+                return Moves.GetRandomMove();
+            }
 
             int history;
             int dynamite = 0;
@@ -52,7 +56,7 @@ namespace RockPaperAzure
             int randomNum;
             int singleTiesRemaining, doubleTiesRemaining, tripleTiesRemaining, throwsRemaining;
 
-            if (((rules.PointsToWin * 2) / 3) < opponent.Points)
+            if (remainingThrowTransition > opponent.Points)
                 throwsRemaining = (rules.PointsToWin * 2) - (opponent.Points + you.Points);
             else
                 throwsRemaining = (rules.PointsToWin - opponent.Points) * 2;
@@ -106,23 +110,37 @@ namespace RockPaperAzure
             }
 
             //if ((you.LastMove != Moves.Dynamite) && ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite))
-            if ((you.LastMove.Equals(opponent.LastMove)) && you.HasDynamite)
+            if ((startDynamite < you.NumberOfDecisions) && you.HasDynamite)
             {
-                randomNum = Moves.GetRandomNumber(100);
-                if (((MyBotLog.getTies() == 2) && ( randomNum < 25)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions)  > 40))
+                //randomNum = Moves.GetRandomNumber(100);
+                if (MyBotLog.getTies() == 2)
                 {
-                    //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
-                    return Moves.Dynamite;
+                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 35)
+                    {
+                        if (Moves.GetRandomNumber(3) == 2)
+                            return Moves.Dynamite;
+                    }
+                    else if (Moves.GetRandomNumber(doubleTiesRemaining + 1) < you.DynamiteRemaining)
+                    {
+                        return Moves.Dynamite;
+                    }
                 }
-                randomNum = Moves.GetRandomNumber(3);
-                if (((MyBotLog.getTies() > 2) && (randomNum == 2)) && ((Moves.GetRandomNumber(50) + you.NumberOfDecisions) > 40))
+                else if (MyBotLog.getTies() > 2)
                 {
-                    //you.Log.AppendLine(String.Format("{0}: Multiple ties : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),randomNum));
-                    return Moves.Dynamite;
+                    if (((you.DynamiteRemaining * 100) / tripleTiesRemaining) > 40)
+                    {
+                        if (Moves.GetRandomNumber(100) < 40)
+                            return Moves.Dynamite;
+                    }
+                    else if (Moves.GetRandomNumber(tripleTiesRemaining + 1) < you.DynamiteRemaining)
+                    {
+                        return Moves.Dynamite;
+                    }
                 }
                 randomNum = Moves.GetRandomNumber(singleTiesRemaining + 1);
                 you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2},{3} random {4}", you.NumberOfDecisions, MyBotLog.getTies(), singleTiesRemaining, throwsRemaining, randomNum));
-                if ((randomNum < you.DynamiteRemaining) && ((Moves.GetRandomNumber(rules.PointsToWin / 2) + you.NumberOfDecisions) > ((rules.PointsToWin * 3) / 2)))
+                if ((randomNum < you.DynamiteRemaining) 
+                    && ((MyBotLog.getTies() == 1) && (you.NumberOfDecisions > (throwsRemaining - (rules.PointsToWin / 40) - Moves.GetRandomNumber(rules.PointsToWin / 40)))))
                 {
                     //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),tiesRemaining));
                     return Moves.Dynamite;
