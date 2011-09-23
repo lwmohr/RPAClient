@@ -1,8 +1,8 @@
-L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\Compete.Bot.dll
-L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\RockPaperScissorsPro.RPA.dll
-L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\RockPaperScissorsPro.RPA.xml
 L:\RPAClient\MyBot\MyBotCSharp\obj\Debug\ResolveAssemblyReference.cache
 L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\CSharpBot.dll
 L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\CSharpBot.pdb
+L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\Compete.Bot.dll
+L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\RockPaperScissorsPro.RPA.dll
+L:\RPAClient\MyBot\MyBotCSharp\bin\Debug\RockPaperScissorsPro.RPA.xml
 L:\RPAClient\MyBot\MyBotCSharp\obj\Debug\CSharpBot.dll
 L:\RPAClient\MyBot\MyBotCSharp\obj\Debug\CSharpBot.pdb
