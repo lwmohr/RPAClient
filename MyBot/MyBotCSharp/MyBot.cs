@@ -81,33 +81,35 @@ namespace RockPaperAzure
             if (dynaCounter == 3)
                 return Moves.WaterBalloon;
 
-            //if (you.NumberOfDecisions < 5)
-            //    you.Log.AppendLine(String.Format("{0}: Move : {1} ms {2}", you.NumberOfDecisions, you.LastMove,you.TotalTimeDeciding.Milliseconds));
-            history = 5;
-            //if ((you.NumberOfDecisions >= history) && (MyBotLog.getTies() > 1))
-            if (you.NumberOfDecisions >= history)
-            {
-                MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-                // you.Log.AppendLine(String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}", you.NumberOfDecisions, MyBotLog.getThrowNum(), MyBotLog.getTies(), MyBotLog.getPointsWon(), you.LastMove, opponent.LastMove, water, dynamite));
-            }
+            //history = 5;
+
+            //if (you.NumberOfDecisions >= history)
+            //{
+            //    MyBotLog.analyzeThrow(history, ref dynamite, ref water);
+            //    // you.Log.AppendLine(String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}", you.NumberOfDecisions, MyBotLog.getThrowNum(), MyBotLog.getTies(), MyBotLog.getPointsWon(), you.LastMove, opponent.LastMove, water, dynamite));
+            //}
             if (you.LastMove.Equals(opponent.LastMove) || (opponent.LastMove.Equals(Moves.Dynamite) || opponent.LastMove.Equals(Moves.WaterBalloon)))
             {
                 history = 5;
                 if (you.NumberOfDecisions >= history)
                 {
                     MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-                    if ((dynamite > 3) && you.HasDynamite)
+                    if ((dynamite > 3) && opponent.HasDynamite)
                     {
-                        //you.Log.AppendLine(String.Format("{0}: Water Balloon : {1}/{2}", you.NumberOfDecisions, dynamite, history));
-                        if (waterCounter > 0)
+                        if ((MyBotLog.getTies() >= 3) || ((rules.PointsToWin / 2) > opponent.Points))
                         {
-                            //you.Log.AppendLine(String.Format("{0}: oops decrement water counter : {1}/{2}", you.NumberOfDecisions, waterCounter, history));
-                            waterCounter--;
-                        }
-                        else
-                        {
-                            waterCounter = 2;
-                            return Moves.WaterBalloon;
+
+                            //you.Log.AppendLine(String.Format("{0}: Water Balloon : {1}/{2}", you.NumberOfDecisions, dynamite, history));
+                            if (waterCounter > 0)
+                            {
+                                //you.Log.AppendLine(String.Format("{0}: oops decrement water counter : {1}/{2}", you.NumberOfDecisions, waterCounter, history));
+                                waterCounter--;
+                            }
+                            else
+                            {
+                                waterCounter = 2;
+                                return Moves.WaterBalloon;
+                            }
                         }
                     }
                     if (water >= 3)
