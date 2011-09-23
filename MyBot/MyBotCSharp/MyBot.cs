@@ -112,7 +112,7 @@ namespace RockPaperAzure
                     }
                     if (water >= 3)
                     {
-                        you.Log.AppendLine(String.Format("{0}: Random : {1}/{2}", you.NumberOfDecisions, water, history));
+                        //you.Log.AppendLine(String.Format("{0}: Random : {1}/{2}", you.NumberOfDecisions, water, history));
                         return Moves.GetRandomMove();
                     }
                 }
@@ -147,19 +147,11 @@ namespace RockPaperAzure
                     }
                 }
                 randomNum = Moves.GetRandomNumber(singleTiesRemaining + 1);
-                //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2},{3} random {4}", you.NumberOfDecisions, MyBotLog.getTies(), singleTiesRemaining, throwsRemaining, randomNum));
-                //if ((randomNum < you.DynamiteRemaining) && ((MyBotLog.getTies() == 1) && (throwsRemaining < 500)))
-                if ((Moves.GetRandomNumber(singleTiesRemaining + 1) < you.DynamiteRemaining) && ((MyBotLog.getTies() == 1) && (throwsRemaining < 400)))
+                if ((Moves.GetRandomNumber(singleTiesRemaining + 1) < ((you.DynamiteRemaining / 3) +1)) && (MyBotLog.getTies() == 1))
                 {
-                    //you.Log.AppendLine(String.Format("{0}: Single Tie : {1},{2}", you.NumberOfDecisions, MyBotLog.getTies(),tiesRemaining));
                     return Moves.Dynamite;
                 }
-                //if (((throwsRemaining / 3) < you.DynamiteRemaining) && (Moves.GetRandomNumber(3) == 2))
-                //    return Moves.Dynamite;
-
             }
-
-           
             return Moves.GetRandomMove();
         }
     }
