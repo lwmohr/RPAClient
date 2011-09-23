@@ -70,9 +70,9 @@ namespace RockPaperAzure
             else
                 throwsRemaining = (rules.PointsToWin - opponent.Points) * 2;
 
-            singleTiesRemaining = throwsRemaining / 3;
-            doubleTiesRemaining = singleTiesRemaining / 3;
-            tripleTiesRemaining = doubleTiesRemaining / 3;
+            singleTiesRemaining = ((2 * throwsRemaining) / 9);
+            doubleTiesRemaining = ((2 * singleTiesRemaining) / 9);
+            tripleTiesRemaining = ((2 * doubleTiesRemaining) / 9);
 
             if ((opponent.LastMove == Moves.Dynamite) && (you.LastMove != Moves.Dynamite))
                 dynaCounter++;
