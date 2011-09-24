@@ -126,9 +126,9 @@ namespace RockPaperAzure
                 //randomNum = Moves.GetRandomNumber(100);
                 if (MyBotLog.getTies() == 2)
                 {
-                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 50)
+                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 40)
                     {
-                        if (Moves.GetRandomNumber(100) < 50)
+                        if (Moves.GetRandomNumber(100) < 40)
                             return Moves.Dynamite;
                     }
                     else if (Moves.GetRandomNumber(doubleTiesRemaining + 1) < you.DynamiteRemaining)
