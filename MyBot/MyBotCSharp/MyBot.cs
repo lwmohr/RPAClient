@@ -12,6 +12,10 @@ namespace RockPaperAzure
         
         int waterCounter = 0;
         int dynaCounter = 0;
+        int dynamiteCheck = 0;
+        int waterCounterCheck = 0;
+        int waterThrown = 0;
+        int waterThrownWins = 0;
         int remainingThrowTransition, startDynamite, startWaterBalloon;
         public Move MakeMove(IPlayer you, IPlayer opponent, GameRules rules)
         {
@@ -54,15 +58,14 @@ namespace RockPaperAzure
             
           // you.Log.AppendLine(myString);
            // you.Log.AppendLine(String.Format("{0}", MyBotLog.oneTieStats()));
-           you.Log.AppendLine(MyBotLog.getTieStats());
-         
-           you.Log.AppendLine(MyBotLog.getMyStats());
+            you.Log.AppendLine(MyBotLog.getTieStats());
+
+            you.Log.AppendLine(MyBotLog.getMyStats());
             you.Log.AppendLine(MyBotLog.getOpponentStats());
 
             int history;
             int dynamite = 0;
             int water = 0;
-            int randomNum;
             int singleTiesRemaining, doubleTiesRemaining, tripleTiesRemaining, throwsRemaining;
 
             if (remainingThrowTransition > opponent.Points)
@@ -80,21 +83,37 @@ namespace RockPaperAzure
                 dynaCounter = 0;
             if (dynaCounter == 3)
                 return Moves.WaterBalloon;
-
-            //history = 5;
-
-            //if (you.NumberOfDecisions >= history)
-            //{
-            //    MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-            //    // you.Log.AppendLine(String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}", you.NumberOfDecisions, MyBotLog.getThrowNum(), MyBotLog.getTies(), MyBotLog.getPointsWon(), you.LastMove, opponent.LastMove, water, dynamite));
-            //}
-            if (you.LastMove.Equals(opponent.LastMove) || (opponent.LastMove.Equals(Moves.Dynamite) || opponent.LastMove.Equals(Moves.WaterBalloon)))
+            dynamiteCheck = 3;
+            waterCounterCheck = 2;
+            history = 5;
+            if (you.LastMove.Equals(Moves.WaterBalloon))
             {
-                history = 5;
+                waterThrown++;
+                if (opponent.LastMove.Equals(Moves.Dynamite))
+                {
+                    waterThrownWins++;
+                }
+
+
+                if ((((waterThrownWins * 100) / waterThrown) <= 60) && (waterThrown > 7))
+                {
+                    dynamiteCheck = 5;
+                    waterCounterCheck = 5;
+                    history = 6;
+                    waterCounter = waterCounterCheck;
+                }
+            }
+
+            
+
+
+            if ((MyBotLog.getTies() > 1) || (opponent.LastMove.Equals(Moves.Dynamite) || opponent.LastMove.Equals(Moves.WaterBalloon)))
+            {
+   
                 if (you.NumberOfDecisions >= history)
                 {
                     MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-                    if ((dynamite >= 3) && opponent.HasDynamite)
+                    if ((dynamite >= dynamiteCheck) && opponent.HasDynamite)
                     {
                         //if ((MyBotLog.getTies() >= 3) || ((rules.PointsToWin / 2) > opponent.Points))
                         //{
@@ -107,7 +126,7 @@ namespace RockPaperAzure
                             }
                             else
                             {
-                                waterCounter = 2;
+                                waterCounter = waterCounterCheck;
                                 return Moves.WaterBalloon;
                             }
                         //}
@@ -126,29 +145,29 @@ namespace RockPaperAzure
                 //randomNum = Moves.GetRandomNumber(100);
                 if (MyBotLog.getTies() == 2)
                 {
-                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 40)
-                    {
+                    //if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 40)
+                    //{
                         if (Moves.GetRandomNumber(100) < 40)
                             return Moves.Dynamite;
-                    }
-                    else if (Moves.GetRandomNumber(doubleTiesRemaining + 1) < you.DynamiteRemaining)
-                    {
-                        return Moves.Dynamite;
-                    }
+                    //}
+                    //else if (Moves.GetRandomNumber(doubleTiesRemaining + 1) < you.DynamiteRemaining)
+                    //{
+                    //    return Moves.Dynamite;
+                    //}
                 }
                 else if (MyBotLog.getTies() > 2)
                 {
-                    if (((you.DynamiteRemaining * 100) / tripleTiesRemaining) > 40)
-                    {
+                    //if (((you.DynamiteRemaining * 100) / tripleTiesRemaining) > 40)
+                    //{
                         if (Moves.GetRandomNumber(100) < 40)
                             return Moves.Dynamite;
-                    }
-                    else if (Moves.GetRandomNumber(tripleTiesRemaining + 1) < you.DynamiteRemaining)
-                    {
-                        return Moves.Dynamite;
-                    }
+                    //}
+                    //else if (Moves.GetRandomNumber(tripleTiesRemaining + 1) < you.DynamiteRemaining)
+                    //{
+                    //    return Moves.Dynamite;
+                    //}
                 }
-                randomNum = Moves.GetRandomNumber(singleTiesRemaining + 1);
+               // randomNum = Moves.GetRandomNumber(singleTiesRemaining + 1);
                 if ((Moves.GetRandomNumber(singleTiesRemaining + 1) < ((you.DynamiteRemaining / 3) +1)) && (MyBotLog.getTies() == 1))
                 {
                     return Moves.Dynamite;
