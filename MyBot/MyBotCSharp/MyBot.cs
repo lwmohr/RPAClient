@@ -94,10 +94,10 @@ namespace RockPaperAzure
                 if (you.NumberOfDecisions >= history)
                 {
                     MyBotLog.analyzeThrow(history, ref dynamite, ref water);
-                    if ((dynamite > 3) && opponent.HasDynamite)
+                    if ((dynamite >= 3) && opponent.HasDynamite)
                     {
-                        if ((MyBotLog.getTies() >= 3) || ((rules.PointsToWin / 2) > opponent.Points))
-                        {
+                        //if ((MyBotLog.getTies() >= 3) || ((rules.PointsToWin / 2) > opponent.Points))
+                        //{
 
                             //you.Log.AppendLine(String.Format("{0}: Water Balloon : {1}/{2}", you.NumberOfDecisions, dynamite, history));
                             if (waterCounter > 0)
@@ -110,7 +110,7 @@ namespace RockPaperAzure
                                 waterCounter = 2;
                                 return Moves.WaterBalloon;
                             }
-                        }
+                        //}
                     }
                     if (water >= 3)
                     {
@@ -126,9 +126,9 @@ namespace RockPaperAzure
                 //randomNum = Moves.GetRandomNumber(100);
                 if (MyBotLog.getTies() == 2)
                 {
-                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 30)
+                    if (((you.DynamiteRemaining * 100) / doubleTiesRemaining) > 50)
                     {
-                        if (Moves.GetRandomNumber(100) < 30)
+                        if (Moves.GetRandomNumber(100) < 50)
                             return Moves.Dynamite;
                     }
                     else if (Moves.GetRandomNumber(doubleTiesRemaining + 1) < you.DynamiteRemaining)
